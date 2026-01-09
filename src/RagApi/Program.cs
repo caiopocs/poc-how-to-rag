@@ -1,4 +1,5 @@
 using Microsoft.KernelMemory;
+using Microsoft.KernelMemory.AI.Ollama;
 using Microsoft.KernelMemory.Configuration;
 using RagApi.Services;
 
@@ -17,7 +18,11 @@ var ollamaModel = builder.Configuration["Ollama:Model"] ?? "llama3";
 var embeddingModel = builder.Configuration["Ollama:EmbeddingModel"] ?? "nomic-embed-text";
 
 var memoryBuilder = new KernelMemoryBuilder()
-    .WithQdrantMemoryDb(qdrantEndpoint)
+    .WithQdrantMemoryDb(new QdrantConfig
+    {
+        Endpoint = qdrantEndpoint,
+        APIKey = ""
+    })
     .WithSimpleFileStorage("/app/data")
     .WithOpenAITextGeneration(new OpenAIConfig
     {
@@ -32,7 +37,8 @@ var memoryBuilder = new KernelMemoryBuilder()
         EmbeddingModel = embeddingModel
     });
 
-var memory = memoryBuilder.Build();
+// Build serverless - processes synchronously inline
+var memory = memoryBuilder.Build<MemoryServerless>();
 
 builder.Services.AddSingleton<IKernelMemory>(memory);
 

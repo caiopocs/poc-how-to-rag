@@ -24,7 +24,7 @@ namespace RagApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UploadDocument([FromForm] IFormFile file)
+        public async Task<IActionResult> UploadDocument(IFormFile file)
         {
             if (file == null || file.Length == 0)
             {
