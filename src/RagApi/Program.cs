@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 // Use real persistence for production-ready setup
 var qdrantEndpoint = builder.Configuration["Qdrant:Host"] ?? "http://localhost:6333";
 var ollamaEndpoint = builder.Configuration["Ollama:ServiceUrl"] ?? "http://localhost:11434";
-var ollamaModel = builder.Configuration["Ollama:Model"] ?? "llama2";
+var ollamaModel = builder.Configuration["Ollama:Model"] ?? "llama3";
 var embeddingModel = builder.Configuration["Ollama:EmbeddingModel"] ?? "nomic-embed-text";
 
 var memoryBuilder = new KernelMemoryBuilder()

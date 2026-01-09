@@ -23,8 +23,8 @@ RUN dotnet publish "RagApi.csproj" -c Release -o /app/publish /p:UseAppHost=fals
 # Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8080
+EXPOSE 8081
 
 # Copy published files from publish stage
 COPY --from=publish /app/publish .
