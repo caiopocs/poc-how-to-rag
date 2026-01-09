@@ -35,6 +35,11 @@ var memoryBuilder = new KernelMemoryBuilder(builder.Services)
         APIKey = "not-used",
         Endpoint = $"{ollamaEndpoint}/v1",
         EmbeddingModel = embeddingModel
+    })
+    .WithCustomTextPartitioningOptions(new TextPartitioningOptions
+    {
+        MaxTokensPerParagraph = 1000,
+        OverlappingTokens = 100
     });
 
 // Build with external connectors (Qdrant + Ollama)
