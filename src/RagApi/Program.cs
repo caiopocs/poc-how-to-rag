@@ -17,7 +17,7 @@ var ollamaEndpoint = builder.Configuration["Ollama:ServiceUrl"] ?? "http://local
 var ollamaModel = builder.Configuration["Ollama:Model"] ?? "llama3";
 var embeddingModel = builder.Configuration["Ollama:EmbeddingModel"] ?? "nomic-embed-text";
 
-var memoryBuilder = new KernelMemoryBuilder()
+var memoryBuilder = new KernelMemoryBuilder(builder.Services)
     .WithQdrantMemoryDb(new QdrantConfig
     {
         Endpoint = qdrantEndpoint,
