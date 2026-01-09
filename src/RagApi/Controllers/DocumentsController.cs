@@ -4,7 +4,7 @@ using RagApi.Services;
 namespace RagApi.Controllers
 {
     [ApiController]
-    [Route("api")]
+    [Route("api/[controller]")]
     public class DocumentsController : ControllerBase
     {
         private readonly IDocumentService _documentService;
@@ -14,8 +14,17 @@ namespace RagApi.Controllers
             _documentService = documentService;
         }
 
-        [HttpPost("ingest")]
-        public async Task<IActionResult> IngestDocument(IFormFile file)
+        /// <summary>
+        /// Upload and ingest a document (PDF, TXT, DOCX, etc.) into the RAG system
+        /// </summary>
+        /// <param name="file">The document file to upload</param>
+        /// <returns>Confirmation of successful ingestion</returns>
+        [HttpPost("upload")]
+        [Consumes("multipart/form-data")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UploadDocument([FromForm] IFormFile file)
         {
             if (file == null || file.Length == 0)
             {

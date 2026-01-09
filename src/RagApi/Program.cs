@@ -18,6 +18,7 @@ var embeddingModel = builder.Configuration["Ollama:EmbeddingModel"] ?? "nomic-em
 
 var memoryBuilder = new KernelMemoryBuilder()
     .WithQdrantMemoryDb(qdrantEndpoint)
+    .WithSimpleFileStorage("/app/data")
     .WithOpenAITextGeneration(new OpenAIConfig
     {
         APIKey = "not-used",

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   qdrant:
     image: qdrant/qdrant:latest
@@ -16,21 +14,28 @@ services:
       dockerfile: Dockerfile
     ports:
       - "11434:11434"
-    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
-      - OLLAMA_MODEL=your_model_name_here
 
   ragapi:
     build:
-      context: ./src/RagApi
+      context: .
+      dockerfile: src/RagApi/Dockerfile
     ports:
-      - "5000:80"
+      - "5000:8080"
     depends_on:
       - qdrant
       - ollama
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - QDRANT_URL=http://qdrant:6333
-      - OLLAMA_URL=http://ollama:11434
-      - KERNEL_MEMORY_OPTIONS=your_kernel_memory_options_here
+      - Qdrant__Host=http://qdrant:6333
+      - Ollama__ServiceUrl=http://ollama:11434
+      - Ollama__Model=llama3
+      - Ollama__EmbeddingModel=nomic-embed-text

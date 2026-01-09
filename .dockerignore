@@ -1,15 +1,35 @@
-# Contents of the file: /LocalRagSystem/LocalRagSystem/.dockerignore
+# Ignore build artifacts
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
 
-bin/
-obj/
-*.sln
-*.user
-*.csproj.user
-*.db
-*.log
-*.md
-*.json
-*.yaml
-*.yml
-*.tmp
-*.tmp.*
+# Ignore git
+.git/
+.github/
+.gitignore
+
+# Ignore user-specific files
+**/*.user
+**/*.csproj.user
+
+# Ignore temporary files
+**/*.tmp
+**/*.tmp.*
+**/*.log
+
+# Ignore test results
+**/TestResults/
+
+# Ignore docker files
+**/Dockerfile*
+**/.dockerignore
+docker-compose*.yml
+
+# Ignore documentation (except needed configs)
+README.md
+docs/
+
+# Keep appsettings for build
+!**/appsettings.json
+!**/appsettings.Development.json

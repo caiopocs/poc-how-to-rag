@@ -2,18 +2,15 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-# Copy solution file and project files
-COPY ["LocalRagSystem.sln", "./"]
+# Copy project file and restore dependencies
 COPY ["src/RagApi/RagApi.csproj", "src/RagApi/"]
+RUN dotnet restore "src/RagApi/RagApi.csproj"
 
-# Restore dependencies
-RUN dotnet restore "LocalRagSystem.sln"
-
-# Copy the entire source code
-COPY . .
+# Copy the source code
+COPY ["src/RagApi/", "src/RagApi/"]
 
 # Build the application
-WORKDIR "/src/src/RagApi"
+WORKDIR /src/src/RagApi
 RUN dotnet build "RagApi.csproj" -c Release -o /app/build
 
 # Publish stage
