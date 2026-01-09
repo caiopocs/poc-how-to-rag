@@ -1,0 +1,32 @@
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+
+E2E Testing for RAG Systems
+
+End-to-end testing is crucial for validating the complete workflow of a Retrieval-Augmented Generation system.
+
+Test Coverage
+
+E2E tests should verify:
+1. Document upload and ingestion
+2. Query processing and response generation
+3. Source citation accuracy
+4. Error handling and edge cases
+
+Benefits of E2E Testing
+
+E2E tests provide confidence that all components work together correctly:
+- API endpoints respond correctly
+- Documents are processed and stored
+- Queries return accurate results
+- The entire pipeline is functional
+
+Testing Best Practices
+
+When testing RAG systems:
+- Use realistic test data
+- Verify both responses and sources
+- Test error scenarios
+- Monitor performance metrics
+- Validate semantic accuracy
+
+This document will be used for E2E testing scenarios.

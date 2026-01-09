@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+    volumes:
+      - ./docker/qdrant/config.yaml:/qdrant/config.yaml
+    environment:
+      - QDRANT__LOG_LEVEL=info
+
+  ollama:
+    build:
+      context: ./docker/ollama
+      dockerfile: Dockerfile
+    ports:
+      - "11434:11434"
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - OLLAMA_MODEL=your_model_name_here
+
+  ragapi:
+    build:
+      context: ./src/RagApi
+    ports:
+      - "5000:80"
+    depends_on:
+      - qdrant
+      - ollama
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - QDRANT_URL=http://qdrant:6333
+      - OLLAMA_URL=http://ollama:11434
+      - KERNEL_MEMORY_OPTIONS=your_kernel_memory_options_here
