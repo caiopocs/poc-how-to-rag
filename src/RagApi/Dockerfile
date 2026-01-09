@@ -21,7 +21,6 @@ RUN dotnet publish "RagApi.csproj" -c Release -o /app/publish /p:UseAppHost=fals
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
 
 # Copy published files from publish stage
 COPY --from=publish /app/publish .

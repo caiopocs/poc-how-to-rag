@@ -37,8 +37,8 @@ var memoryBuilder = new KernelMemoryBuilder()
         EmbeddingModel = embeddingModel
     });
 
-// Build serverless - processes synchronously inline
-var memory = memoryBuilder.Build<MemoryServerless>();
+// Build with external connectors (Qdrant + Ollama)
+var memory = memoryBuilder.Build();
 
 builder.Services.AddSingleton<IKernelMemory>(memory);
 
@@ -49,11 +49,8 @@ builder.Services.AddScoped<IChatService, ChatService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseAuthorization();
 app.MapControllers();
