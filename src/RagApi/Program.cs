@@ -1,4 +1,5 @@
 using Microsoft.KernelMemory;
+using Microsoft.KernelMemory.Configuration;
 using RagApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,10 +10,28 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Configure Kernel Memory with Qdrant and Ollama
-// Note: This is a simplified configuration for testing
-// In production, configure with actual Qdrant and Ollama endpoints
-var memoryBuilder = new KernelMemoryBuilder();
-var memory = memoryBuilder.Build<MemoryServerless>();
+// Use real persistence for production-ready setup
+var qdrantEndpoint = builder.Configuration["Qdrant:Host"] ?? "http://localhost:6333";
+var ollamaEndpoint = builder.Configuration["Ollama:ServiceUrl"] ?? "http://localhost:11434";
+var ollamaModel = builder.Configuration["Ollama:Model"] ?? "llama2";
+var embeddingModel = builder.Configuration["Ollama:EmbeddingModel"] ?? "nomic-embed-text";
+
+var memoryBuilder = new KernelMemoryBuilder()
+    .WithQdrantMemoryDb(qdrantEndpoint)
+    .WithOpenAITextGeneration(new OpenAIConfig
+    {
+        APIKey = "not-used",
+        Endpoint = $"{ollamaEndpoint}/v1",
+        TextModel = ollamaModel
+    })
+    .WithOpenAITextEmbeddingGeneration(new OpenAIConfig
+    {
+        APIKey = "not-used",
+        Endpoint = $"{ollamaEndpoint}/v1",
+        EmbeddingModel = embeddingModel
+    });
+
+var memory = memoryBuilder.Build();
 
 builder.Services.AddSingleton<IKernelMemory>(memory);
 

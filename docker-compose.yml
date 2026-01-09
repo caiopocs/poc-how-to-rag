@@ -4,14 +4,15 @@ services:
   ragapi:
     image: ragapi:latest
     build:
-      context: ./src/RagApi
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: src/RagApi/Dockerfile
     ports:
       - "5000:80"
     environment:
-      - KERNEL_MEMORY_OPTIONS__Endpoint=http://kernel-memory:5001
-      - QDRANT_OPTIONS__Endpoint=http://qdrant:6333
-      - OLLAMA_OPTIONS__Endpoint=http://ollama:8080
+      - Qdrant__Host=http://qdrant:6333
+      - Ollama__ServiceUrl=http://ollama:11434
+      - Ollama__Model=llama2
+      - Ollama__EmbeddingModel=nomic-embed-text
     depends_on:
       - qdrant
       - ollama
@@ -29,8 +30,14 @@ services:
     build:
       context: ./docker/ollama
     ports:
-      - "8080:8080"
-    runtime: nvidia
+      - "11434:11434"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
 
